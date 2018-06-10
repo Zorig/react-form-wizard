@@ -20,5 +20,20 @@
       "strings": true
     },
     "editor.tabSize": 4
-  }
+  },
+  "[css]": {
+    "editor.tabSize": 2
+  },
+  "emmet.syntaxProfiles": {
+    "html": {
+      "attr_quotes": "single"
+    },
+    "jsx": {
+      "self_closing_tag": true
+    }
+  },
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "eslint.packageManager": "yarn"
 }

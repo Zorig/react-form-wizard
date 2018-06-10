@@ -13,7 +13,9 @@ const store = createStore(reducers, composeWithDevTools())
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 )

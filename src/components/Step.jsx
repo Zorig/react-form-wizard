@@ -1,28 +1,23 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+
 import 'react-select/dist/react-select.css'
-const dishes = [
-  {
-    id: 1,
-    name: 'Chicken Burger',
-    restaurant: 'Mc Donalds',
-    availableMeals: ['lunch', 'dinner']
-  }
-]
+
+import { setMealType } from '../actions'
+import { mealSelector } from '../selectors'
+
 class Step extends Component {
   constructor(props) {
     super(props)
     this.state = {
       value: '',
-      people: 0,
-      dishCount: [],
-      meal: '',
-      dish: ''
+      people: 1
     }
-    this.addDishCount = this.addDishCount.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange({ target }) {
@@ -33,116 +28,64 @@ class Step extends Component {
     })
   }
 
-  handleSelect(option) {
-    return value => {
-      this.setState({
-        [option]: value
-      })
-    }
-  }
-
-  addDishCount() {
-    const dishCount = this.state.dishCount
+  handleSelect(value) {
+    console.log(value)
     this.setState({
-      dishCount: dishCount.concat([
-        {
-          dish: '',
-          no: 1
-        }
-      ])
+      value
     })
   }
 
-  renderForm(step) {
-    switch (step) {
-      case 2:
-        return (
-          <form onSubmit={this.props.onSubmit}>
-            <label htmlFor="">
-              Please select a Restaurant
-              <Select
-                value={this.state.restaurant}
-                options={dishes}
-                valueKey="id"
-                labelKey="restaurant"
-                onChange={this.handleSelect('restaurant')}
-              />
-            </label>
-          </form>
-        )
-      case 3:
-        return (
-          <div>
-            <div>
-              {this.state.dishCount.map(index => (
-                <DishSelect
-                  key={index + 'a'}
-                  dish={this.state.dish}
-                  servings={this.state.servings}
-                />
-              ))}
-            </div>
-            <div>
-              <a onClick={this.addDishCount}>add</a>
-            </div>
-          </div>
-        )
-      default:
-        return (
-          <form onSubmit={this.props.onSubmit}>
-            <label>
-              <Select
-                value={this.state.value}
-                options={dishes}
-                labelKey="name"
-                valueKey="id"
-                onChange={this.handleSelect('meal')}
-              />
-            </label>
-            <label>
-              <input
-                type="number"
-                name="people"
-                value={this.state.people}
-                onChange={this.handleChange}
-              />
-            </label>
-          </form>
-        )
-    }
+  async handleSubmit(e) {
+    e.preventDefault()
+    await this.props.setMealType(this.state.value, this.state.people)
   }
 
   render() {
-    const props = this.props
-
-    return this.renderForm(props.step)
+    const meals = [
+      { label: 'Breakfast', value: 'breakfast' },
+      { label: 'Lunch', value: 'lunch' },
+      { label: 'Dinner', value: 'dinner' }
+    ]
+    return (
+      <form onSubmit={this.handleSubmit} className="step-1">
+        <label>
+          Please select a Meal
+          <Select
+            value={this.state.value}
+            options={meals}
+            simpleValue
+            onChange={this.handleSelect}
+          />
+        </label>
+        <label>
+          Please enter Number of people
+          <input
+            type="number"
+            name="people"
+            value={this.state.people}
+            onChange={this.handleChange}
+            max={10}
+            min={1}
+          />
+        </label>
+        <div>
+          <button type="submit" className="right">
+            Next
+          </button>
+        </div>
+      </form>
+    )
   }
 }
 
-const DishSelect = ({ props }) => (
-  <div>
-    <label htmlFor="">
-      Please select a Dish
-      <Select
-        value={props.dish}
-        options={dishes}
-        valueKey="id"
-        labelKey="dish"
-        onChange={this.handleSelect('restaurant')}
-      />
-    </label>
-    <input
-      type="number"
-      name="servings"
-      value={props.servings}
-      onChange={this.handleChange}
-      ter
-    />
-  </div>
-)
-
 Step.propTypes = {
-  onSubmit: PropTypes.func
+  setMealType: PropTypes.func
 }
 
-export default Step
+const mapStateToProps = state => ({
+  mealOptions: mealSelector(state)
+})
+
+export default connect(mapStateToProps, {
+  setMealType
+})(Step)

@@ -1,0 +1,73 @@
+body {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.menu {
+  display: flex;
+  list-style: none;
+  -webkit-padding-start: 0;
+}
+
+.menu li a {
+  background-color: #eff0f2;
+  color: #888;
+  padding: 1rem;
+  text-decoration: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  border-bottom: 2px solid blue;
+}
+
+.menu li a.active {
+  color: #fff;
+  background: blue;
+}
+
+.main {
+  margin: 5rem 0;
+}
+
+label {
+  margin: 5rem 0;
+}
+
+input {
+  display: block;
+  border: 0.07rem solid #ddd;
+  padding: 0 0.5rem;
+  line-height: 1.5rem;
+  border-radius: 0.4rem;
+  margin: 0.5rem 0;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+button,
+a.button {
+  font-size: 15px;
+  color: white;
+  background: blue;
+  padding: 1rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+button,
+a.button:hover {
+  color: white;
+  background: #3939f1;
+}
+
+.navigation {
+  margin: 1rem 0;
+}
