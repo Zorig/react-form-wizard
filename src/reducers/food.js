@@ -1,7 +1,13 @@
-import { DISH, MEAL_TYPE, NUMBER_PEOPLE } from '../actions'
+import {
+  MEAL_TYPE,
+  NUMBER_PEOPLE,
+  RESTAURANT,
+  DISH,
+  ADD_DISH
+} from '../actions'
 
 const INITIAL_STATE = {
-  dishes: [
+  data: [
     {
       id: 1,
       name: 'Chicken Burger',
@@ -202,18 +208,19 @@ const INITIAL_STATE = {
     }
   ],
   meal: '',
-  numberOfPeople: 1
+  numberOfPeople: 1,
+  restaurant: '',
+  dishes: [
+    {
+      dish: '',
+      numberOfServings: 1
+    }
+  ]
 }
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case DISH:
-      return {
-        ...state,
-        dish: action.dish
-      }
     case MEAL_TYPE:
-      console.log('Meal type', action)
       return {
         ...state,
         meal: action.meal
@@ -222,6 +229,22 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         numberOfPeople: action.numberOfPeople
+      }
+    case RESTAURANT:
+      return {
+        ...state,
+        restaurant: action.restaurant
+      }
+    case DISH:
+      return {
+        ...state,
+        dishes: action.dishes
+      }
+    case ADD_DISH:
+      const dish = [...state, { dish: '', numberOfServings: 1 }]
+      return {
+        ...state,
+        dishes: dish
       }
     default:
       return state

@@ -1,28 +1,34 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { dishSelector } from '../selectors'
 
 const dishes = [
   {
-    id: 1,
-    name: 'Chicken Burger',
-    restaurant: 'Mc Donalds',
+    id: 6,
+    name: 'Burrito',
+    restaurant: 'Taco Bell',
+    availableMeals: ['lunch', 'dinner']
+  },
+  {
+    id: 7,
+    name: 'Tacos',
+    restaurant: 'Taco Bell',
+    availableMeals: ['lunch', 'dinner']
+  },
+  {
+    id: 8,
+    name: 'Quesadilla',
+    restaurant: 'Taco Bell',
     availableMeals: ['lunch', 'dinner']
   }
 ]
-
 class StepThree extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      dishes: [
-        {
-          meal: '',
-          numberOfServings: 1
-        }
-      ]
-    }
     this.handleChange = this.handleChange.bind(this)
+    this.addDishOption = this.addDishOption.bind(this)
   }
 
   handleChange({ target }) {
@@ -47,26 +53,21 @@ class StepThree extends Component {
   }
 
   render() {
-    const props = this.props
-    const { dishes } = this.state
+    console.log(this.props)
+    const f = [{ dishes: '', number: 1 }]
     return (
-      <form onSubmit={props.onSubmit} className="step-3">
-        {dishes.map((dish, index) => (
-          <DishOption
-            key={index + dish.meal}
-            index={index}
-            dish={this.state.dishes[index]}
-            {...props}
-          />
+      <form className="step-3">
+        {f.map((dish, index) => (
+          <DishOption key={index + dish.number} {...dish} />
         ))}
         <button className="add">+</button>
         <div className="navigation">
-          <Link to="/" className="button left">
+          <Link to="/2" className="button left">
             Previous
           </Link>
-          <button className="button right" type="submit">
+          <Link to="/4" className="button right">
             Next
-          </button>
+          </Link>
         </div>
       </form>
     )
@@ -77,18 +78,27 @@ const DishOption = ({ props }) => (
   <div>
     <label htmlFor="">
       Please select a Dish
-      <Select options={dishes} value={props} labelKey="name" valueKey="id" />
+      {/* <Select
+        options={dishes}
+        value={}
+        labelKey="name"
+        valueKey="id"
+      /> */}
+      <input type="text" />
     </label>
     <label htmlFor="">
       Please enter no. of servings
       <input
         type="number"
         name="numberOfServings"
-        value="numberOfServings"
         onChange={this.handleChange}
       />
     </label>
   </div>
 )
 
-export default StepThree
+const mapStateToProps = state => ({
+  data: dishSelector(state)
+})
+
+export default connect(mapStateToProps, {})(StepThree)

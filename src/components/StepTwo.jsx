@@ -1,42 +1,33 @@
 import React, { Component } from 'react'
-import Select from 'react-select'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import Select from 'react-select'
+import PropTypes from 'prop-types'
 
-const dishes = [
-  {
-    id: 1,
-    name: 'Chicken Burger',
-    restaurant: 'Mc Donalds',
-    availableMeals: ['lunch', 'dinner']
-  }
-]
+import { restaurantSelector, mealSelector } from '../selectors'
+import { setRestaurant } from '../actions'
 
 class Step2 extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      restaurant: ''
-    }
     this.handleSelect = this.handleSelect.bind(this)
   }
 
   handleSelect(restaurant) {
-    this.setState({
-      restaurant
-    })
+    this.props.setRestaurant(restaurant)
   }
 
   render() {
-    const props = this.props
+    const { restaurants, food } = this.props
+    console.log(this.props)
     return (
-      <form onSubmit={props.onSubmit} className="step-2">
+      <form className="step-2">
         <label>
           Please select a Restaurant
           <Select
-            value={this.state.restaurant}
-            options={dishes}
-            labelKey="restaurant"
-            valueKey="id"
+            value={food.restaurant}
+            options={restaurants}
+            simpleValue
             onChange={this.handleSelect}
           />
         </label>
@@ -44,13 +35,26 @@ class Step2 extends Component {
           <Link to="/" className="button left">
             Previous
           </Link>
-          <button className="button right" type="submit">
+          <Link to="/3" className="button right">
             Next
-          </button>
+          </Link>
         </div>
       </form>
     )
   }
 }
 
-export default Step2
+Step2.propTypes = {
+  setRestaurant: PropTypes.func,
+  restaurants: PropTypes.array,
+  food: PropTypes.any
+}
+
+const mapStateToProps = state => ({
+  restaurants: restaurantSelector(state),
+  food: mealSelector(state)
+})
+
+export default connect(mapStateToProps, {
+  setRestaurant
+})(Step2)

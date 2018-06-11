@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import 'react-select/dist/react-select.css'
 
-import { setMealType } from '../actions'
+import { setMealType, setNumberOfPeople } from '../actions'
 import { mealSelector } from '../selectors'
 
 class Step extends Component {
@@ -21,18 +22,12 @@ class Step extends Component {
   }
 
   handleChange({ target }) {
-    const value = target.type === 'checkbox' ? target.checked : target.value
-    const name = target.name
-    this.setState({
-      [name]: value
-    })
+    this.props.setNumberOfPeople(target.value)
   }
 
   handleSelect(value) {
-    console.log(value)
-    this.setState({
-      value
-    })
+    console.log('setting meal', value)
+    this.props.setMealType(value)
   }
 
   async handleSubmit(e) {
@@ -41,6 +36,7 @@ class Step extends Component {
   }
 
   render() {
+    console.log(this.props)
     const meals = [
       { label: 'Breakfast', value: 'breakfast' },
       { label: 'Lunch', value: 'lunch' },
@@ -51,7 +47,7 @@ class Step extends Component {
         <label>
           Please select a Meal
           <Select
-            value={this.state.value}
+            value={this.props.food.meal}
             options={meals}
             simpleValue
             onChange={this.handleSelect}
@@ -62,16 +58,16 @@ class Step extends Component {
           <input
             type="number"
             name="people"
-            value={this.state.people}
+            value={this.props.food.numberOfPeople}
             onChange={this.handleChange}
             max={10}
             min={1}
           />
         </label>
         <div>
-          <button type="submit" className="right">
+          <Link to="/2" className="button right">
             Next
-          </button>
+          </Link>
         </div>
       </form>
     )
@@ -79,13 +75,15 @@ class Step extends Component {
 }
 
 Step.propTypes = {
-  setMealType: PropTypes.func
+  setMealType: PropTypes.func,
+  food: PropTypes.object
 }
 
 const mapStateToProps = state => ({
-  mealOptions: mealSelector(state)
+  food: mealSelector(state)
 })
 
 export default connect(mapStateToProps, {
-  setMealType
+  setMealType,
+  setNumberOfPeople
 })(Step)

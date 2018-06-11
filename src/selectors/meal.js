@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
 
-const getMeal = state => state.food.dishes
+const getMeal = state => state.food
 
-export const mealSelector = createSelector(getMeal, dishes => dishes)
+export const mealSelector = createSelector(getMeal, food => food)
