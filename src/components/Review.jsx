@@ -6,14 +6,26 @@ import { mealSelector } from '../selectors'
 class StepFour extends Component {
   handleSubmit(e) {
     e.preventDefault()
-    console.log(this.props)
+    console.log(this.props.data)
   }
   render() {
+    const { data } = this.props
+    console.log(data.dishes)
     return (
       <form>
-        Meals: No. of People: Restaurant: Dishes:
-        <Link to="/3">Previous</Link>
-        <button type="submit" onClick={this.handleSubmit}>
+        <div>Meal - {data.meal}</div>
+        <div>No.of People - {data.numberOfPeople}</div>
+        <div>Restaurant - {data.restaurant.name}</div>
+        <div>Dish - {data.dishes.numberOfServings}</div>
+        <br />
+        <Link to="/3" className="button left">
+          Previous
+        </Link>
+        <button
+          type="submit"
+          className="right button"
+          onClick={this.handleSubmit}
+        >
           Submit
         </button>
       </form>
@@ -25,4 +37,7 @@ const mapStateToProps = state => ({
   data: mealSelector(state)
 })
 
-export default connect(mapStateToProps, {})(StepFour)
+export default connect(
+  mapStateToProps,
+  {}
+)(StepFour)

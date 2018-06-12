@@ -26,7 +26,6 @@ class Step extends Component {
   }
 
   handleSelect(value) {
-    console.log('setting meal', value)
     this.props.setMealType(value)
   }
 
@@ -36,7 +35,6 @@ class Step extends Component {
   }
 
   render() {
-    console.log(this.props)
     const meals = [
       { label: 'Breakfast', value: 'breakfast' },
       { label: 'Lunch', value: 'lunch' },
@@ -83,7 +81,10 @@ const mapStateToProps = state => ({
   food: mealSelector(state)
 })
 
-export default connect(mapStateToProps, {
-  setMealType,
-  setNumberOfPeople
-})(Step)
+export default connect(
+  mapStateToProps,
+  {
+    setMealType,
+    setNumberOfPeople
+  }
+)(Step)

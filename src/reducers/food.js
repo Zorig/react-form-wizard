@@ -3,7 +3,9 @@ import {
   NUMBER_PEOPLE,
   RESTAURANT,
   DISH,
-  ADD_DISH
+  ADD_DISH,
+  REMOVE_DISH,
+  NUMBER_SERVINGS
 } from '../actions'
 
 const INITIAL_STATE = {
@@ -210,12 +212,10 @@ const INITIAL_STATE = {
   meal: '',
   numberOfPeople: 1,
   restaurant: '',
-  dishes: [
-    {
-      dish: '',
-      numberOfServings: 1
-    }
-  ]
+  dishes: {
+    dish: {},
+    numberOfServings: 1
+  }
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -238,13 +238,29 @@ export default (state = INITIAL_STATE, action) => {
     case DISH:
       return {
         ...state,
-        dishes: action.dishes
+        dishes: {
+          dish: action.dish.dish,
+          numberOfServings: action.dish.numberOfServings
+        }
       }
-    case ADD_DISH:
-      const dish = [...state, { dish: '', numberOfServings: 1 }]
+    case NUMBER_SERVINGS:
+      console.log('dishset number', action)
+      let number = (state.dishes[action.index].numberOfServings = action.number)
       return {
         ...state,
-        dishes: dish
+        dishes: number
+      }
+    case ADD_DISH:
+      const dish = state.dishes
+      return {
+        ...state,
+        dishes: dish.concat({ dish: '', numberOfServings: 1 })
+      }
+    case REMOVE_DISH:
+      const dishes = state.dishes.splice(action.index)
+      return {
+        ...state,
+        dishes
       }
     default:
       return state

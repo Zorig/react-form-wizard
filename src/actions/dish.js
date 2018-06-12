@@ -1,14 +1,30 @@
-import { DISH, ADD_DISH } from './types'
+import { DISH, ADD_DISH, NUMBER_SERVINGS, REMOVE_DISH } from './types'
 
-export const setDISH = dishes => {
+export const setDish = dish => {
   return {
     type: DISH,
-    dishes
+    dish
+  }
+}
+
+export const setNumberOfServings = (number, index) => {
+  console.log(number, index)
+  return {
+    type: NUMBER_SERVINGS,
+    number,
+    index
   }
 }
 
 export const addDish = () => {
   return {
     type: ADD_DISH
+  }
+}
+
+export const removeDish = index => {
+  return {
+    type: REMOVE_DISH,
+    index
   }
 }

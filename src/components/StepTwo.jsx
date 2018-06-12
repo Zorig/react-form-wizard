@@ -19,7 +19,6 @@ class Step2 extends Component {
 
   render() {
     const { restaurants, food } = this.props
-    console.log(this.props)
     return (
       <form className="step-2">
         <label>
@@ -27,7 +26,8 @@ class Step2 extends Component {
           <Select
             value={food.restaurant}
             options={restaurants}
-            simpleValue
+            labelKey="restaurant"
+            valueKey="restaurant"
             onChange={this.handleSelect}
           />
         </label>
@@ -55,6 +55,9 @@ const mapStateToProps = state => ({
   food: mealSelector(state)
 })
 
-export default connect(mapStateToProps, {
-  setRestaurant
-})(Step2)
+export default connect(
+  mapStateToProps,
+  {
+    setRestaurant
+  }
+)(Step2)
